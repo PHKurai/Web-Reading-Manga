@@ -5,119 +5,61 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
-    .navbar {
-        background-color: #fff;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        padding: 10px 40px;
-    }
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
 
-    .nav-links {
-        list-style: none;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    .nav-links li {
-        position: relative;
-    }
+        <div class="collapse navbar-collapse" id="navbars">
+            <ul class="container d-flex align-items-center justify-content-evenly navbar-nav mb-0">
 
-    .nav-links a {
-        text-decoration: none;
-        color: #333;
-        padding: 10px 15px;
-        display: block;
-        transition: all 0.3s ease;
-        font-weight: 500;
-        border-bottom: 2px solid white;
-    }
+                <li class="nav-item">
+                    <a class="nav-link" href="home.jsp">Trang Chủ</a>
+                </li>
 
-    .nav-links a:hover {
-        background-color: #e0f7fa;
-        border-bottom: 2px solid #00acc1;
-    }
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="typeDropdown" role="button" data-bs-toggle="dropdown">
+                        Thể Loại
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Adventure</a></li>
+                        <li><a class="dropdown-item" href="#">Anime</a></li>
+                        <li><a class="dropdown-item" href="#">Chuyển Sinh</a></li>
+                        <li><a class="dropdown-item" href="#">Cổ Đại</a></li>
+                        <li><a class="dropdown-item" href="#">Comedy</a></li>
+                        <li><a class="dropdown-item" href="#">Drama</a></li>
+                        <li><a class="dropdown-item" href="#">Fantasy</a></li>
+                        <li><a class="dropdown-item" href="#">Manga</a></li>
+                        <li><a class="dropdown-item" href="#">Manhwa</a></li>
+                    </ul>
+                </li>
 
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #fff;
-        padding: 15px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 10px;
-        z-index: 100;
-        width: max-content;
-    }
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="rankingDropdown" role="button" data-bs-toggle="dropdown">
+                        Xếp Hạng
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Mới nhất</a></li>
+                        <li><a class="dropdown-item" href="#">Đọc nhiều</a></li>
+                        <li><a class="dropdown-item" href="#">Yêu thích</a></li>
+                    </ul>
+                </li>
 
-    .dropdown-content a {
-        padding: 5px;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-    }
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Lịch Sử</a>
+                </li>
 
-    .dropdown-content a:hover {
-        background-color: #e0f7fa;
-        border-bottom: 2px solid #e0f7fa;
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: grid;
-    }
-
-    .dropdown > a::after {
-        content: " ▼";
-        font-size: 0.8em;
-    }
-</style>
-<nav class="navbar">
-    
-    <!-- List navigation -->
-    <ul class="nav-links">
-        
-        <!-- Home -->
-        <li><a href="#">Trang Chủ</a></li>
-        
-        <!-- Type -->
-        <li class="dropdown">
-            <a href="#">Thể Loại</a>
-            <div class="dropdown-content">
-                <a href="#">Action</a>
-                <a href="#">Adventure</a>
-                <a href="#">Anime</a>
-                <a href="#">Chuyển Sinh</a>
-                <a href="#">Cổ Đại</a>
-                <a href="#">Comedy</a>
-                <a href="#">Drama</a>
-                <a href="#">Fantasy</a>
-                <a href="#">Manga</a>
-                <a href="#">Manhwa</a>
-            </div>
-        </li>
-        
-        <!-- Ranking -->
-        <li class="dropdown">
-            <a href="#">Xếp Hạng</a>
-            <div class="dropdown-content">
-                <a href="#">Mới nhất</a>
-                <a href="#">Đọc nhiều</a>
-                <a href="#">Yêu thích</a>
-            </div>
-        </li>
-        
-        <!-- History -->
-        <li><a href="#">Lịch Sử</a></li>
-        
-        <!-- Following -->
-        <li><a href="#">Theo Dõi</a></li>
-    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Theo Dõi</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

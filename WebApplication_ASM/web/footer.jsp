@@ -5,81 +5,49 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+    /* Example for custom icons in footer-center if you have them */
+    .fb::before {
+        content: "FB";
+        font-weight: bold;
     }
-
-    .footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        padding: 20px 40px;
-        background-color: #007bff;
-        color: white;
-        border-top: 1px solid #ddd;
+    .ig::before {
+        content: "IG";
+        font-weight: bold;
     }
-
-    .footer-left,
-    .footer-center,
-    .footer-right {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
+    .gh::before {
+        content: "GH";
+        font-weight: bold;
     }
-
-    .footer-center {
-        flex-direction: row;
-        gap: 20px;
-    }
-
-    .footer-center a {
-        color: white;
-        font-size: 24px;
-        transition: color 0.3s;
-    }
-
-    .footer-center a:hover {
-        color: #00acc1;
-    }
-
-    @media (max-width: 768px) {
-        .footer {
-            flex-direction: column;
-            text-align: center;
-            gap: 20px;
-        }
-
-        .footer-right {
-            text-align: center;
-        }
-    }
-
 </style>
 
-<footer class="footer">
+<footer class="bg-primary text-white">
+    <div class="container py-4">
+        <div class="row">
+            <!-- Left Section -->
+            <div class="col-md-4 mb-3">
+                <p class="mb-1">Trang web đọc truyện tranh online</p>
+                <h3 class="h5">TenWeb</h3>
+                <p class="mb-0">Email hỗ trợ: phuclamhong05@gmail.com</p>
+            </div>
 
-    <!-- Left section -->
-    <div class="footer-left">
-        <p>Trang web đọc truyện tranh online</p>
-        <h3>TenWeb</h3>
-        <p>Email hỗ trợ: phuclamhong05@gmail.com</p>
-    </div>
+            <!-- Center Section -->
+            <div class="col-md-4 mb-3 d-flex align-items-center justify-content-center">
+                <!-- Replace with your social icons or text -->
+                <a href="#" class="text-white fs-4 mx-2"><i class="fb"></i></a>
+                <a href="#" class="text-white fs-4 mx-2"><i class="ig"></i></a>
+                <a href="#" class="text-white fs-4 mx-2"><i class="gh"></i></a>
+            </div>
 
-    <!-- Center section -->
-    <div class="footer-center">
-        <a href="#"><i class="fb"></i></a>
-        <a href="#"><i class="ig"></i></a>
-        <a href="#"><i class="gh"></i></a>
-    </div>
-
-    <!-- Right section -->
-    <div class="footer-right">
-        <p>Copyright @ 2025</p>
-        <p>Không sao chép</p>
+            <!-- Right Section -->
+            <div class="col-md-4 mb-3 text-md-end text-center">
+                <p class="mb-1">&copy; 2025</p>
+                <p class="mb-0">Không sao chép</p>
+            </div>
+        </div>
     </div>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
