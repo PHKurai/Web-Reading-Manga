@@ -3,8 +3,10 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import dto.AccountDTO;
+import dto.AccountDTO;
 
-public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class changePassword_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -51,6 +53,7 @@ public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<html>\n");
       out.write("    ");
@@ -58,34 +61,60 @@ public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
       out.write("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\">\n");
+      out.write("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css\">\n");
       out.write("\n");
       out.write("<header class=\"bg-primary text-white py-3\">\n");
-      out.write("    <div class=\"container d-flex align-items-center justify-content-between\">\n");
-      out.write("        <!-- Logo -->\n");
-      out.write("        <div class=\"d-flex align-items-center\">\n");
-      out.write("            <!-- If you have a logo image, place it here:\n");
-      out.write("                 <img src=\"logo.png\" alt=\"Logo\" width=\"40\" height=\"40\" class=\"me-2\">\n");
-      out.write("            -->\n");
-      out.write("            <span class=\"fs-4 fw-bold\">TENWEB</span>\n");
-      out.write("        </div>\n");
+      out.write("    <div class=\"container-fluid bg-primary text-white py-2\">\n");
+      out.write("        <div class=\"container\">\n");
+      out.write("            <div class=\"d-flex align-items-center justify-content-between\">\n");
       out.write("\n");
-      out.write("        <form class=\"d-flex w-50\" role=\"search\">\n");
-      out.write("            <input class=\"form-control me-2\" type=\"search\" placeholder=\"Bạn muốn tìm truyện gì\">\n");
-      out.write("                <button class=\"btn btn-light\" type=\"submit\">\n");
-      out.write("                    <!-- Example search icon (Bootstrap Icons) -->\n");
-      out.write("                    <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" \n");
-      out.write("                         class=\"bi bi-search\" viewBox=\"0 0 16 16\">\n");
-      out.write("                        <path d=\"M11 6a5 5 0 1 1-9.999.001A5 5 0 0 1 11 6zm-1.017 \n");
-      out.write("                              3.314a6 6 0 1 0-1.414 1.414l3.85 3.85a1 1 \n");
-      out.write("                              0 0 0 1.414-1.414l-3.85-3.85z\"/>\n");
-      out.write("                    </svg>\n");
-      out.write("                </button>\n");
-      out.write("        </form>\n");
+      out.write("                <div class=\"d-flex align-items-center\">\n");
+      out.write("                    <!-- If you have a logo image, use: \n");
+      out.write("                         <img src=\"logo.png\" alt=\"Logo\" class=\"me-2\" style=\"width: 40px; height: 40px;\"> -->\n");
+      out.write("                    <span class=\"fs-4 fw-bold\">TENWEB</span>\n");
+      out.write("                </div>\n");
       out.write("\n");
-      out.write("        <div>\n");
-      out.write("            <a href=\"auth.jsp?action=sign_up\" class=\"btn btn-light me-2\">Đăng ký</a>\n");
-      out.write("            <a href=\"auth.jsp?action=login\" class=\"btn btn-light\">Đăng nhập</a>\n");
+      out.write("                <form class=\"d-flex w-50 mx-3\" role=\"search\">\n");
+      out.write("                    <input \n");
+      out.write("                        class=\"form-control me-2\" \n");
+      out.write("                        type=\"search\" \n");
+      out.write("                        placeholder=\"Bạn muốn tìm truyện gì\" \n");
+      out.write("                        aria-label=\"Search\">\n");
+      out.write("                    <button class=\"btn btn-light\" type=\"submit\">\n");
+      out.write("                        <i class=\"bi bi-search\"></i>\n");
+      out.write("                    </button>\n");
+      out.write("                </form>\n");
+      out.write("\n");
+      out.write("                ");
+
+                    if (session.getAttribute("account") != null) {
+                        AccountDTO acc = (AccountDTO) session.getAttribute("account");
+                
+      out.write("\n");
+      out.write("                <a href=\"ProfileController?action=infor\" class=\"d-flex align-items-center\">\n");
+      out.write("                    <span class=\"me-2 text-white\">");
+      out.print(acc.getName());
+      out.write("</span>\n");
+      out.write("                    <img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGTgDr7zVZCP1vzULDJuI4vfRxzykZ5tjnAYSAYlRq-V3T8aIafR0nLdP_z5ln7pzSYqI&usqp=CAU\" alt=\"Avatar\" class=\"rounded-circle\" style=\"width: 40px; height: 40px;\">\n");
+      out.write("                </a>\n");
+      out.write("                ");
+
+                } else {
+                
+      out.write("\n");
+      out.write("                <div>\n");
+      out.write("                    <a href=\"MainController?action=sign_up\" class=\"btn btn-light me-2\">Đăng ký</a>\n");
+      out.write("                    <a href=\"MainController?action=login\" class=\"btn btn-light\">Đăng nhập</a>\n");
+      out.write("                </div>\n");
+      out.write("                ");
+
+                    }
+                
+      out.write("\n");
+      out.write("\n");
+      out.write("            </div>\n");
       out.write("        </div>\n");
       out.write("    </div>\n");
       out.write("</header>\n");
@@ -158,156 +187,56 @@ public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("    <head>\n");
       out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
-      out.write("        <title>Trang chủ</title>\n");
+      out.write("        <title>Đổi mật khẩu</title>\n");
       out.write("        <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\">\n");
       out.write("        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js\"></script>\n");
       out.write("    </head>\n");
       out.write("    <body>\n");
-      out.write("        <div class=\"popular-comic shadow-lg text-white p-4 mb-4 position-relative\" \n");
-      out.write("             style=\"background-image: url('https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg'); background-size: cover; background-position: center;\">\n");
+      out.write("        ");
+            if (session.getAttribute("account") != null) {
+                AccountDTO acc = (AccountDTO) session.getAttribute("account");
+        
       out.write("\n");
-      out.write("            <div class=\"position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50\"></div>\n");
+      out.write("        <div class=\"container py-5\">\n");
+      out.write("            <h2 class=\"mb-4\">Change Password</h2>\n");
+      out.write("            <div class=\"card\">\n");
+      out.write("                <div class=\"card-body\">\n");
       out.write("\n");
-      out.write("            <div class=\"container position-relative\">\n");
-      out.write("                <div class=\"row align-items-center\">\n");
-      out.write("                    <div class=\"col-md-4\">\n");
-      out.write("                        <img src=\"https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg\" alt=\"Comic Cover\"\n");
-      out.write("                             class=\"img-fluid border border-white rounded shadow\">\n");
-      out.write("                    </div>\n");
-      out.write("\n");
-      out.write("                    <div class=\"col-md-8\">\n");
-      out.write("                        <div class=\"mt-3 mt-md-0\">\n");
-      out.write("                            <h2 class=\"fs-2 mb-3\">Akumade Taidana Akuyaku Kizoku</h2>\n");
-      out.write("\n");
-      out.write("                            <div class=\"mb-3\">\n");
-      out.write("                                <span class=\"badge bg-warning text-dark\">Action</span>\n");
-      out.write("                                <span class=\"badge bg-warning text-dark\">Adventure</span>\n");
-      out.write("                                <span class=\"badge bg-warning text-dark\">Fantasy</span>\n");
-      out.write("                                <span class=\"badge bg-warning text-dark\">Seinen</span>\n");
+      out.write("                    <form id=\"mb-4\">\n");
+      out.write("                        <div class=\"row mb-3\">\n");
+      out.write("                            <label class=\"col-sm-3 col-form-label\">Name</label>\n");
+      out.write("                            <div class=\"col-sm-9\">\n");
+      out.write("                                <input type=\"text\" class=\"form-control\" value=\"");
+      out.print(acc.getName());
+      out.write("\" disabled />\n");
       out.write("                            </div>\n");
-      out.write("\n");
-      out.write("                            <p class=\"mb-3\">\n");
-      out.write("                                Luke is the only 3rd son of a villainous duke. By some unexpected instance he comes to know\n");
-      out.write("                                of his own fate and attempts to avoid it. He works hard at finding a peaceful family to\n");
-      out.write("                                marry into and researching magic. All his hard work is to live a peaceful and slothful\n");
-      out.write("                                life... And yet he gets involved in one plan after another!\n");
-      out.write("                            </p>\n");
-      out.write("\n");
-      out.write("                            <div class=\"fw-light fst-italic\">By Serota, Izo</div>\n");
       out.write("                        </div>\n");
-      out.write("                    </div>\n");
+      out.write("                        <div class=\"row mb-3\">\n");
+      out.write("                            <label class=\"col-sm-3 col-form-label\">Email Address</label>\n");
+      out.write("                            <div class=\"col-sm-9\">\n");
+      out.write("                                <input type=\"email\" class=\"form-control\" value=\"");
+      out.print((acc.getEmail()+"").equals("null")?"":acc.getEmail());
+      out.write("\" disabled />\n");
+      out.write("                            </div>\n");
+      out.write("                        </div>\n");
+      out.write("                    </form>\n");
+      out.write("\n");
       out.write("                </div>\n");
       out.write("            </div>\n");
       out.write("        </div>\n");
       out.write("\n");
-      out.write("\n");
-      out.write("        <div class=\"container\">\n");
-      out.write("            <div class=\"d-flex justify-content-between\"><h3>Top Read This Week</h3> <a href=\"comicList.jsp\" class=\"arrow-link\">→</a></div>\n");
-      out.write("            <div class=\"row row-cols-3 row-cols-md-6 g-4 mb-4\">\n");
-      out.write("                ");
+      out.write("        ");
 
-                    for (int i = 0; i < 6; i++) {
-                
+        } else {
+        
       out.write("\n");
-      out.write("                <div class=\"col\">\n");
-      out.write("                    <div class=\"card comic-card\">\n");
-      out.write("                        <img src=\"https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg\" class=\"card-img-top w-100 h-50\" alt=\"");
- 
-      out.write("\" style=\"max-height: 220px;\">\n");
-      out.write("                        <div class=\"card-body\">\n");
-      out.write("                            <h5 class=\"card-title\"> Comic Title 1  </h5>\n");
-      out.write("                            <p class=\"card-text\">Short description or snippet about the comic.</p>\n");
-      out.write("                            <a href=\"#\" class=\"btn btn-primary\" >Đọc ngay</a>\n");
-      out.write("                        </div>\n");
-      out.write("                    </div>\n");
-      out.write("                </div>\n");
-      out.write("                ");
+      out.write("        <p style=\"color: red\">You do not have permission to access this content.</p>\n");
+      out.write("        ");
 
-                    }
-
-                
+            }
+        
       out.write("\n");
-      out.write("            </div>\n");
       out.write("\n");
-      out.write("            <div class=\"d-flex justify-content-between\"><h3>Top Read This Month</h3> <a href=\"#\" class=\"arrow-link\">→</a></div>\n");
-      out.write("            <div class=\"row row-cols-3 row-cols-md-6 g-4 mb-4\">\n");
-      out.write("                ");
-                    for (int i = 0; i < 6; i++) {
-                
-      out.write("\n");
-      out.write("                <div class=\"col\">\n");
-      out.write("                    <div class=\"card comic-card\">\n");
-      out.write("                        <img src=\"https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg\" class=\"card-img-top w-100 h-50\" alt=\"");
- 
-      out.write("\" style=\"max-height: 220px;\">\n");
-      out.write("                        <div class=\"card-body\">\n");
-      out.write("                            <h5 class=\"card-title\"> Comic Title 1  </h5>\n");
-      out.write("                            <p class=\"card-text\">Short description or snippet about the comic.</p>\n");
-      out.write("                            <a href=\"#\" class=\"btn btn-primary\" >Đọc ngay</a>\n");
-      out.write("                        </div>\n");
-      out.write("                    </div>\n");
-      out.write("                </div>\n");
-      out.write("                ");
-
-                    }
-
-                
-      out.write("\n");
-      out.write("            </div>\n");
-      out.write("\n");
-      out.write("            <div class=\"d-flex justify-content-between\"><h3>Top Read This Year</h3> <a href=\"#\" class=\"arrow-link\">→</a></div>\n");
-      out.write("            <div class=\"row row-cols-3 row-cols-md-6 g-4 mb-4\">\n");
-      out.write("                ");
-                    for (int i = 0; i < 6; i++) {
-                
-      out.write("\n");
-      out.write("                <div class=\"col\">\n");
-      out.write("                    <div class=\"card comic-card\">\n");
-      out.write("                        <img src=\"https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg\" class=\"card-img-top w-100 h-50\" alt=\"");
- 
-      out.write("\" style=\"max-height: 220px;\">\n");
-      out.write("                        <div class=\"card-body\">\n");
-      out.write("                            <h5 class=\"card-title\"> Comic Title 1  </h5>\n");
-      out.write("                            <p class=\"card-text\">Short description or snippet about the comic.</p>\n");
-      out.write("                            <a href=\"#\" class=\"btn btn-primary\" >Đọc ngay</a>\n");
-      out.write("                        </div>\n");
-      out.write("                    </div>\n");
-      out.write("                </div>\n");
-      out.write("                ");
-
-                    }
-
-                
-      out.write("\n");
-      out.write("            </div>\n");
-      out.write("\n");
-      out.write("            <div class=\"d-flex justify-content-between\"><h3>Recently Added</h3> <a href=\"#\" class=\"arrow-link\">→</a></div>\n");
-      out.write("            <div class=\"row row-cols-3 row-cols-md-6 g-4 mb-4\">\n");
-      out.write("                ");
-                    for (int i = 0; i < 6; i++) {
-                
-      out.write("\n");
-      out.write("                <div class=\"col\">\n");
-      out.write("                    <div class=\"card comic-card\">\n");
-      out.write("                        <img src=\"https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg\" class=\"card-img-top w-100 h-50\" alt=\"");
- 
-      out.write("\" style=\"max-height: 220px;\">\n");
-      out.write("                        <div class=\"card-body\">\n");
-      out.write("                            <h5 class=\"card-title\"> Comic Title 1  </h5>\n");
-      out.write("                            <p class=\"card-text\">Short description or snippet about the comic.</p>\n");
-      out.write("                            <a href=\"#\" class=\"btn btn-primary\" >Đọc ngay</a>\n");
-      out.write("                        </div>\n");
-      out.write("                    </div>\n");
-      out.write("                </div>\n");
-      out.write("                ");
-
-                    }
-
-                
-      out.write("\n");
-      out.write("            </div>\n");
-      out.write("        </div>\n");
-      out.write("            \n");
       out.write("        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js\"></script>\n");
       out.write("\n");
       out.write("    </body>\n");

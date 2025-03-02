@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DBUtils {
-    private static final String DB_Name;
+    private static final String DB_Name = "assignment";
     private static final String DB_Username = "sa";
     private static final String DB_Password = "12345";
     

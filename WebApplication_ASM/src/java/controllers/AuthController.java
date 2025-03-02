@@ -5,6 +5,8 @@
  */
 package controllers;
 
+import dao.AccountDAO;
+import dto.AccountDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -18,12 +20,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author phucl
  */
-@WebServlet(name = "MainController", urlPatterns = {"/MainController"})
-public class MainController extends HttpServlet {
+@WebServlet(name = "AuthController", urlPatterns = {"/AuthController"})
+public class AuthController extends HttpServlet {
     
-    private String HOME_PAGE = "home.jsp";
-    private String AUTH_PAGE = "auth.jsp";
-    private String COMIC_DETAIL_PAGE = "comicDetail.jsp";
+    private final String HOME_PAGE = "home.jsp";
+    private final String AUTH_PAGE = "auth.jsp";
+    private final AccountDAO aDAO = new AccountDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,7 +40,7 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        String url = HOME_PAGE;
+        String url = AUTH_PAGE;
         
         try {
             String action = request.getParameter("action");
@@ -54,20 +56,59 @@ public class MainController extends HttpServlet {
     }
     
     private String controllAction(String action, HttpServletRequest request, HttpServletResponse response) {
-        String url = HOME_PAGE;
-        
+        String url = AUTH_PAGE;
+        String username, password, confirmPassword;
         switch (action) {
             case "login":
-                url = AUTH_PAGE;
+                username = request.getParameter("username");
+                password = request.getParameter("password");
+                
+                if (isValidAccount(username, password)) {
+                    url = HOME_PAGE;
+                    AccountDTO acc = getAccount(username);
+                    request.getSession().setAttribute("account", acc);
+                    
+                } else {
+                    url = AUTH_PAGE;
+                    request.setAttribute("msgError", "Username or Password is incorrect!");
+                }
+                
                 request.setAttribute("isLogin", true);
                 break;
-            case "sign_up":
-                url = AUTH_PAGE;
+            case "signup":
+                username = request.getParameter("username");
+                password = request.getParameter("password");
+                confirmPassword = request.getParameter("confirmPassword");
+                
+                if (password.equals(confirmPassword)) {
+                    AccountDTO acc = new AccountDTO(username, password);
+                    if (aDAO.create(acc)) {
+                        url = HOME_PAGE;
+                        acc = aDAO.readById(username);
+                        request.getSession().setAttribute("account", acc);
+                    } else {
+                        url = AUTH_PAGE;
+                        request.setAttribute("msgError", "Username is already taken!");
+                    }
+                } else {
+                    url = AUTH_PAGE;
+                    request.setAttribute("msgError", "Password must like confirm password!");
+                }
                 request.setAttribute("isLogin", false);
                 break;
         }
         
         return url;
+    }
+    
+    private boolean isValidAccount(String username, String password) {
+        AccountDTO acc = getAccount(username);
+        return acc != null && acc.getPassword().equals(password);
+    }
+    
+    private AccountDTO getAccount(String username) {
+        return aDAO.readById(username);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -14,6 +14,13 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </head>
     <body>
+        <%
+            boolean isLogin = false;
+            if (request.getAttribute("isLogin") != null) {
+                isLogin = (boolean) request.getAttribute("isLogin");
+            }
+        %>
+
         <header class="navbar navbar-expand-lg navbar-light bg-primary py-3 border-bottom">
             <div class="container">
                 <a class="navbar-brand text-white fs-4 fw-bold" href="home.jsp">MyComicSite</a>
@@ -31,38 +38,35 @@
                 <div class="col-lg-6">
                     <ul class="nav nav-tabs mb-4" id="authTab" role="tablist">
                         <li class="nav-item">
-                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">
+                            <button class="nav-link <%=isLogin == true ? "" : "active"%>" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">
                                 Register
                             </button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">
+                            <button class="nav-link <%=isLogin == true ? "active" : ""%>" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">
                                 Login
                             </button>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                        <div class="tab-pane fade <%=isLogin == true ? "" : "active show"%>" id="register" role="tabpanel">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title mb-3">Create Your Account</h4>
-                                    <form>
+                                    <form action="AuthController" method="post">
+                                        <input type="hidden" name="action" value="signup" />
                                         <div class="mb-3">
                                             <label class="form-label">Username</label>
-                                            <input type="text" class="form-control" placeholder="e.g. John Doe">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" class="form-control" placeholder="john@example.com">
+                                            <input type="text" class="form-control" placeholder="e.g. John Doe" name="username">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Password</label>
-                                            <input type="password" class="form-control" placeholder="********">
+                                            <input type="password" class="form-control" placeholder="********" name="password">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Confirm Password</label>
-                                            <input type="password" class="form-control" placeholder="********">
+                                            <input type="password" class="form-control" placeholder="********" name="confirmPassword">
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100">SIGN UP</button>
                                     </form>
@@ -70,18 +74,19 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
+                        <div class="tab-pane fade <%=isLogin == true ? "active show" : ""%>" id="login" role="tabpanel" >
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title mb-3">Login</h4>
-                                    <form>
+                                    <form action="AuthController" method="post">
+                                        <input type="hidden" name="action" value="login" />
                                         <div class="mb-3">
-                                            <label class="form-label">Username or Email</label>
-                                            <input type="text" class="form-control" placeholder="Your username or email">
+                                            <label class="form-label">Username</label>
+                                            <input type="text" class="form-control" placeholder="Your username" name="username">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Password</label>
-                                            <input type="password" class="form-control" placeholder="********">
+                                            <input type="password" class="form-control" placeholder="********" name="password">
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100">LOGIN</button>
                                     </form>
@@ -94,26 +99,6 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const urlParams = new URLSearchParams(window.location.search);
-                const tab = urlParams.get("action");
-
-                if (tab === "login") {
-                    document.getElementById("login-tab").classList.add("active");
-                    document.getElementById("register-tab").classList.remove("active");
-
-                    document.getElementById("login").classList.add("show", "active");
-                    document.getElementById("register").classList.remove("show", "active");
-                } else {
-                    document.getElementById("register-tab").classList.add("active");
-                    document.getElementById("login-tab").classList.remove("active");
-
-                    document.getElementById("register").classList.add("show", "active");
-                    document.getElementById("login").classList.remove("show", "active");
-                }
-            });
-        </script>
 
     </body>
     <%@include file="footer.jsp" %>

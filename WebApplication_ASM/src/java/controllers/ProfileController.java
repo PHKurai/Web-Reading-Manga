@@ -5,6 +5,8 @@
  */
 package controllers;
 
+import dao.AccountDAO;
+import dto.AccountDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -18,12 +20,14 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author phucl
  */
-@WebServlet(name = "MainController", urlPatterns = {"/MainController"})
-public class MainController extends HttpServlet {
+@WebServlet(name = "ProfileController", urlPatterns = {"/ProfileController"})
+public class ProfileController extends HttpServlet {
     
-    private String HOME_PAGE = "home.jsp";
-    private String AUTH_PAGE = "auth.jsp";
-    private String COMIC_DETAIL_PAGE = "comicDetail.jsp";
+    AccountDAO aDAO = new AccountDAO();
+    
+    private final String HOME_PAGE = "home.jsp";
+    private final String INFOR_PAGE = "userInfor.jsp";
+    private final String CHANGE_PASSWORD_PAGE = "changePassword.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,8 +41,7 @@ public class MainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        String url = HOME_PAGE;
+        String url = INFOR_PAGE;
         
         try {
             String action = request.getParameter("action");
@@ -54,16 +57,40 @@ public class MainController extends HttpServlet {
     }
     
     private String controllAction(String action, HttpServletRequest request, HttpServletResponse response) {
-        String url = HOME_PAGE;
-        
+        String url = INFOR_PAGE;
         switch (action) {
-            case "login":
-                url = AUTH_PAGE;
-                request.setAttribute("isLogin", true);
+            case "infor":
+                url = INFOR_PAGE;
                 break;
-            case "sign_up":
-                url = AUTH_PAGE;
-                request.setAttribute("isLogin", false);
+            case "changePassword":
+                url = CHANGE_PASSWORD_PAGE;
+                break;
+            case "editProfile":
+                url = INFOR_PAGE;
+                break;
+            case "logout":
+                url = HOME_PAGE;
+                request.getSession().invalidate();
+                break;
+            case "doChangePassword":
+                AccountDTO account = (AccountDTO) request.getSession().getAttribute("account");
+                String oldPassword = request.getParameter("oldPassword");
+                String newPassword = request.getParameter("newPassword");
+                String confirmPassword = request.getParameter("confirmPassword");
+                System.out.println(newPassword);
+                if (oldPassword.equals(account.getPassword())) {
+                    if (!newPassword.trim().isEmpty() && newPassword.equals(confirmPassword)) {
+                        account.setPassword(newPassword);
+                        aDAO.update(account);
+                        url = INFOR_PAGE;
+                    } else {
+                        url = CHANGE_PASSWORD_PAGE;
+                        request.setAttribute("confirmPasswordError", "Your confirm password incorrect!");
+                    }
+                } else {
+                    url = CHANGE_PASSWORD_PAGE;
+                    request.setAttribute("oldPasswordError", "Your password incorrect!");
+                }
                 break;
         }
         
