@@ -14,6 +14,8 @@ public class AccountDTO {
     private String password;
     private String name;
     private String email;
+    private String role;
+    private boolean activity;
 
     public AccountDTO() {
     }
@@ -23,11 +25,13 @@ public class AccountDTO {
         this.password = password;
     }
 
-    public AccountDTO(String username, String password, String name, String email) {
+    public AccountDTO(String username, String password, String name, String email, String role, boolean activity) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.role = role;
+        this.activity = activity;
     }
 
     public String getUsername() {
@@ -62,10 +66,25 @@ public class AccountDTO {
         this.email = email;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isActivity() {
+        return activity;
+    }
+
+    public void setActivity(boolean activity) {
+        this.activity = activity;
+    }
+
     @Override
     public String toString() {
-        return "AccountDTO{" + "username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + '}';
+        return "AccountDTO{" + "username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + ", role=" + role + ", activity=" + activity + '}';
     }
-    
     
 }

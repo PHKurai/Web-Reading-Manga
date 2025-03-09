@@ -99,7 +99,9 @@ public class AccountDAO implements I_DAO<AccountDTO, String> {
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("name"),
-                        rs.getString("email"));
+                        rs.getString("email"),
+                        rs.getString("role"),
+                        rs.getBoolean("activity"));
                 return sp;
             }
         } catch (Exception e) {
