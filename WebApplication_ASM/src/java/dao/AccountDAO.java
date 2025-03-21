@@ -9,6 +9,7 @@ import dto.AccountDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import utils.DBUtils;
 
@@ -20,7 +21,7 @@ public class AccountDAO implements I_DAO<AccountDTO, String> {
 
     @Override
     public boolean create(AccountDTO entity) {
-        String sql = "INSERT INTO account "
+        String sql = "INSERT INTO accounts "
                 + "( username, password) "
                 + " VALUES (?,?)";
         try {
@@ -39,10 +40,11 @@ public class AccountDAO implements I_DAO<AccountDTO, String> {
 
     @Override
     public boolean update(AccountDTO entity) {
-        String sql = "UPDATE account SET "
+        String sql = "UPDATE accounts SET "
                 + "password = ?, "
                 + "name = ?, "
                 + "email = ?, "
+                + "avatar = ? "
                 + "WHERE username = ?";
         
         try {
@@ -51,7 +53,8 @@ public class AccountDAO implements I_DAO<AccountDTO, String> {
             ps.setString(1, entity.getPassword());
             ps.setString(2, entity.getName());
             ps.setString(3, entity.getEmail());
-            ps.setString(4, entity.getUsername());
+            ps.setString(4, entity.getAvatar());
+            ps.setString(5, entity.getUsername());
             int n = ps.executeUpdate();
             return n > 0;
         } catch (Exception e) {
@@ -63,7 +66,7 @@ public class AccountDAO implements I_DAO<AccountDTO, String> {
 
     @Override
     public boolean delete(String id) {
-        String sql = "UPDATE account SET "
+        String sql = "UPDATE accounts SET "
                 + "activity = 0 "
                 + "WHERE username = ?";
         
@@ -82,12 +85,35 @@ public class AccountDAO implements I_DAO<AccountDTO, String> {
 
     @Override
     public List<AccountDTO> readAll() {
-        return null;
+        String sql = "SELECT * FROM accounts";
+        List<AccountDTO> accounts = new ArrayList<>();
+        
+        try{
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                AccountDTO sp = new AccountDTO(
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("role"),
+                        rs.getString("avatar"),
+                        rs.getBoolean("is_active"));
+                
+                accounts.add(sp);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        
+        return accounts;
     }
 
     @Override
     public AccountDTO readById(String id) {
-        String sql = "SELECT * FROM account WHERE username LIKE ?";
+        String sql = "SELECT * FROM accounts WHERE username LIKE ?";
         
         try{
             Connection conn = DBUtils.getConnection();
@@ -101,7 +127,8 @@ public class AccountDAO implements I_DAO<AccountDTO, String> {
                         rs.getString("name"),
                         rs.getString("email"),
                         rs.getString("role"),
-                        rs.getBoolean("activity"));
+                        rs.getString("avatar"),
+                        rs.getBoolean("is_active"));
                 return sp;
             }
         } catch (Exception e) {

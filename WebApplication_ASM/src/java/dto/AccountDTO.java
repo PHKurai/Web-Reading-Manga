@@ -5,6 +5,8 @@
  */
 package dto;
 
+import java.util.Objects;
+
 /**
  *
  * @author phucl
@@ -15,6 +17,7 @@ public class AccountDTO {
     private String name;
     private String email;
     private String role;
+    private String avatar;
     private boolean activity;
 
     public AccountDTO() {
@@ -25,14 +28,35 @@ public class AccountDTO {
         this.password = password;
     }
 
-    public AccountDTO(String username, String password, String name, String email, String role, boolean activity) {
+    public AccountDTO(String username, String password, String name, String email, String role, String avatar, boolean activity) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
         this.role = role;
+        this.avatar = avatar;
         this.activity = activity;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AccountDTO other = (AccountDTO) obj;
+        if (!Objects.equals(this.username, other.username)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
     public String getUsername() {
         return username;
@@ -82,9 +106,19 @@ public class AccountDTO {
         this.activity = activity;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public String toString() {
-        return "AccountDTO{" + "username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + ", role=" + role + ", activity=" + activity + '}';
+        return "AccountDTO{" + "username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + ", role=" + role + ", avatar=" + avatar + ", activity=" + activity + '}';
     }
+
+    
     
 }

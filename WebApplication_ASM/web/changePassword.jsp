@@ -32,8 +32,8 @@
                                 <div class="col-sm-9">
                                     <input type="password" class="form-control" name="oldPassword" placeholder="********"
                                            value="<c:if test="${not empty requestScope.oldPassword}">${requestScope.oldPassword}</c:if>"/>
+                                    </div>
                                 </div>
-                            </div>
                             <c:if test="${not empty requestScope.msgOldPasswordError}">
                                 <p class="text-end text-danger">${requestScope.msgOldPasswordError}</p>
                             </c:if>
@@ -43,8 +43,8 @@
                                 <div class="col-sm-9">
                                     <input type="password" class="form-control" name="newPassword" placeholder="********"
                                            value="<c:if test="${not empty requestScope.newPassword}">${requestScope.newPassword}</c:if>"/>
+                                    </div>
                                 </div>
-                            </div>
                             <c:if test="${not empty requestScope.msgNewPwError}">
                                 <p class="text-end text-danger">${requestScope.msgNewPwError}</p>
                             </c:if>
@@ -54,8 +54,8 @@
                                 <div class="col-sm-9">
                                     <input type="password" class="form-control" name="confirmPassword" placeholder="********"
                                            value="<c:if test="${not empty requestScope.confirmPassword}">${requestScope.confirmPassword}</c:if>"/>
+                                    </div>
                                 </div>
-                            </div>
                             <c:if test="${not empty requestScope.msgConfirmPwError}">
                                 <p class="text-end text-danger">${requestScope.msgConfirmPwError}</p>
                             </c:if>
@@ -77,7 +77,6 @@
         </c:if>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+        <%@include file="footer.jsp" %>
     </body>
-    <%@include file="footer.jsp" %>
 </html>

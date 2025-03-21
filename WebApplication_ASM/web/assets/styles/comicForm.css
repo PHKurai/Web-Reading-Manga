@@ -1,0 +1,24 @@
+#categoryContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.category-chip {
+    position: relative;
+    cursor: default;
+}
+
+.remove-category {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 0.3rem;
+    color: white;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    line-height: 1;
+}

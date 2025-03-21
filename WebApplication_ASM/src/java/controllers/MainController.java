@@ -6,7 +6,6 @@
 package controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +22,6 @@ public class MainController extends HttpServlet {
     
     private String HOME_PAGE = "home.jsp";
     private String AUTH_PAGE = "auth.jsp";
-    private String COMIC_DETAIL_PAGE = "comicDetail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

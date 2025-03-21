@@ -4,96 +4,170 @@
     Author     : phucl
 --%>
 
+<%@page import="dto.ChapterDTO"%>
+<%@page import="dto.HistoryDTO"%>
+<%@page import="dao.HistoryDAO"%>
+<%@page import="dto.ComicDTO"%>
+<%@page import="utils.AuthUtil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-    <%@include file="header.jsp" %>
-    <%@include file="nav.jsp" %>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </head>
-    <body>
-        <div class="container text-dark my-4">
-            <div class="row">
+    <c:if test="${empty comic}">
+        <%@include file="incorrectContent.jsp" %>
+    </c:if>
 
-                <div class="col-md-3 mb-3">
-                    <img src="https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg" alt="Comic Cover" class="img-fluid rounded"/>
-                </div>
+    <c:if test="${not empty comic}">
 
-                <div class="col-md-9">
-                    <h2 class="fw-bold">Tên truyện: Ta Là Tà Đế</h2>
-                    <p><strong>Tác giả:</strong> Đông Cấp Nhất</p>
-                    <p><strong>Tình trạng:</strong> Đang cập nhật</p>
-                    <p>
-                        <strong>Lượt thích:</strong> 123 &nbsp; | &nbsp;
-                        <strong>Lượt theo dõi:</strong> 456 &nbsp; | &nbsp;
-                        <strong>Lượt xem:</strong> 789
-                    </p>
-                    <p>
-                        <strong>Thể loại:</strong>
-                        <span class="badge bg-info text-dark">Supernatural</span>
-                        <span class="badge bg-info text-dark">Manhua</span>
-                        <span class="badge bg-info text-dark">Xuyên Không</span>
-                    </p>
+        <%
+            if (AuthUtil.isLogin(session)) {
+                AccountDTO acc = AuthUtil.getAccount(session);
+                ComicDTO comic = (ComicDTO) request.getAttribute("comic");
 
-                    <div class="mb-3">
-                        <a href="#" class="btn btn-success me-2">Đọc từ đầu</a>
-                        <button class="btn btn-warning me-2">Theo dõi</button>
-                        <button class="btn btn-danger">Thích</button>
+                HistoryDAO historyDAO = new HistoryDAO();
+                historyDAO.changeHistory(new HistoryDTO(acc.getUsername(), comic.getId()));
+            }
+        %>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>${title}</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </head>
+        <body>
+            <%@include file="header.jsp" %>
+            <%@include file="nav.jsp" %>
+            <div style="position: relative; min-height: 100vh;">
+                <div style="padding-bottom: 10rem;">
+                    <div class="container text-dark my-4">
+                        <div class="row">
+
+                            <div class="col-md-3 mb-3">
+                                <img src="${comic.coverImage}" alt="${comic.title}" class="img-fluid rounded"/>
+                            </div>
+
+                            <div class="col-md-9">
+                                <div class="d-flex justify-content-between">
+                                    <h2 class="fw-bold">${comic.title}</h2>
+                                    <%if (AuthUtil.isAdmin(session)) {%>
+                                    <a class="btn btn-outline-primary" href="ComicController?action=editComic&comicId=${comic.id}">Edit Comic</a>
+                                    <%}%>
+                                </div>
+
+                                <p><strong>Author:</strong> ${comic.author}</p>
+                                <p><strong>Status:</strong> ${comic.status}</p>
+                                <p>
+                                    <strong>Likes:</strong> ${comic.likes} &nbsp; | &nbsp;
+                                    <strong>Follows:</strong> ${comic.favorites} &nbsp; | &nbsp;
+                                    <strong>Views:</strong> ${comic.views}
+                                </p>
+                                <p>
+                                    <strong>Categories:</strong>
+                                    <c:if test="${not empty categoriesOfComic}">
+                                        <c:forEach var="category" items="${categoriesOfComic}">
+                                            <a class="btn badge bg-info text-dark" href="CategoryController?categoryId=${category.id}">${category.name}</a>
+                                        </c:forEach>
+                                    </c:if>
+                                    <c:if test="${empty categoriesOfComic}">
+                                        <span>Not have category</span>
+                                    </c:if>
+                                </p>
+
+                                <c:if test="${not empty chapters}">
+                                    <div class="mb-3">
+                                        <%                                List<ChapterDTO> chapters = (List<ChapterDTO>) request.getAttribute("chapters");
+                                            ChapterDTO firstChap = chapters.get(chapters.size() - 1);
+                                        %>
+                                        <a href="ReadChapterController?chapterId=<%=firstChap.getId()%>" class="btn btn-outline-primary me-2">Read at first</a>
+                                        <c:if test="${not empty account}">
+                                            <c:if test="${isFollowing}">
+                                                <a href="ReadComicController?comicId=${comic.id}&action=unfollow" class="btn btn-outline-warning me-2">Unfollow</a>
+                                            </c:if>
+                                            <c:if test="${not isFollowing}">
+                                                <a href="ReadComicController?comicId=${comic.id}&action=follow" class="btn btn-outline-success me-2">Follow</a>
+                                            </c:if>
+
+                                            <c:if test="${isLiked}">
+                                                <a href="ReadComicController?comicId=${comic.id}&action=unlike" class="btn btn-outline-warning me-2">Unlike</a>
+                                            </c:if>
+                                            <c:if test="${not isLiked}">
+                                                <a href="ReadComicController?comicId=${comic.id}&action=like" class="btn btn-outline-danger me-2">Like</a>
+                                            </c:if>
+                                        </c:if>
+                                    </div>
+                                </c:if>
+                                <div class="mb-3">
+                                    <h5 class="fw-bold">Description</h5>
+                                    <p>
+                                        ${comic.description}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <c:if test="${not empty chapters}">
+                                <hr class="my-4" />
+                                <div class="d-flex d-flex justify-content-between">
+                                    <h4 class="fw-bold">Chapters</h4>
+                                    <%if (AuthUtil.isAdmin(session)) {%>
+                                    <a class="btn btn-outline-primary" href="ChapterController?action=addChapter&comicId=${comic.id}">Add Chapter</a>
+                                    <%}%>
+                                </div>
+
+                                <div class="input-group mb-3 mt-3">
+                                    <form class="d-flex w-100" action="ReadComicController" method="get">
+                                        <input name="comicId" value="${comic.id}" type="hidden"/>
+                                        <input name="searchChapter" type="text" class="form-control" placeholder="Search Chapter" value="${searchChapter}" />
+                                        <button class="btn btn-secondary" type="submit">Search</button>
+                                    </form>
+                                </div>
+
+                                <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Chapter</th>
+                                                <th>Name</th>
+                                                <th>Date Add</th>
+                                                    <%if (AuthUtil.isAdmin(session)) {%>
+                                                <th>Edit Chapter</th>
+                                                    <%}%>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="chapter" items="${chapters}">
+                                                <tr>
+                                                    <td>${chapter.chapterNumber}</td>
+                                                    <td><a href="ReadChapterController?chapterId=${chapter.id}">${chapter.title}<c:if test="${empty chapter.title}">Chapter ${chapter.chapterNumber}</c:if></a></td>
+                                                    <td>${chapter.createdDate}</td>
+                                                    <%if (AuthUtil.isAdmin(session)) {%>
+                                                    <td><a class="btn btn-outline-primary" href="ChapterController?action=editChapter&comicId=${comic.id}&chapterId=${chapter.id}">Edit Chapter</a></td>
+                                                    <%}%>
+                                                </tr>
+                                            </c:forEach>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </c:if>
+
+                            <c:if test="${empty chapters}">
+                                <p>Not have chapter</p>
+                                <%if (AuthUtil.isAdmin(session)) {%>
+                                <a class="btn btn-outline-primary" href="ChapterController?action=addChapter&comicId=${comic.id}">Add Chapter</a>
+                                <%}%>
+                            </c:if>
+
+                        </div>
+
                     </div>
 
-                    <div class="mb-3">
-                        <h5 class="fw-bold">Giới thiệu</h5>
-                        <p>
-                            Truyện Ta Là Tà Đế được cập nhật nhanh và đầy đủ nhất tại MyComicSite.
-                            Đừng quên ủng hộ và bình luận để nhóm dịch có thêm động lực nhé!
-                        </p>
-                    </div>
                 </div>
+                <%@include file="footer.jsp" %>
             </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
 
-            <hr class="my-4" />
-            <h4 class="fw-bold">Danh Sách Chương</h4>
+    </c:if>
 
-            <div class="input-group mb-3 mt-3">
-                <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Tìm chương..."
-                    aria-label="Search Chapter"
-                    />
-                <button class="btn btn-secondary" type="button">Tìm</button>
-            </div>
-
-            <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>Chương</th>
-                            <th>Ngày cập nhật</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                            for (int i = 100; i > 0; i--) {
-                        %>
-                        <tr>
-                            <td><a href="read-comic.html">Chương <%=i%></a></td>
-                            <td>28/02/2025</td>
-                        </tr>
-                        <%
-                            }
-                        %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
-    
-    <%@include file="footer.jsp" %>
 </html>

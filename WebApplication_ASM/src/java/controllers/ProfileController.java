@@ -8,7 +8,6 @@ package controllers;
 import dao.AccountDAO;
 import dto.AccountDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import utils.AuthUtil;
+import utils.PasswordUtils;
 
 /**
  *
@@ -50,16 +50,17 @@ public class ProfileController extends HttpServlet {
             if (action != null) {
                 url = controllAction(action, request, response);
             }
-        } catch (Exception e) {
-            log("Error in MainController: " + e.toString());
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
+        } catch (Exception e) {}
+        
+        RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-        }
     }
 
     private String controllAction(String action, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        
         String url = INFOR_PAGE;
         switch (action) {
             case "infor":
@@ -78,8 +79,8 @@ public class ProfileController extends HttpServlet {
             case "doChangePassword":
                 url = processDoChangePassword(request, response);
                 break;
-            case "doEditProfile":
-                url = processDoEditProfile(request, response);
+            case "updateProfile":
+                url = processUpdateProfile(request, response);
                 break;
         }
 
@@ -95,40 +96,38 @@ public class ProfileController extends HttpServlet {
         return url;
     }
     
-    private String processDoEditProfile(HttpServletRequest request, HttpServletResponse response)
+    private String processUpdateProfile(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = INFOR_PAGE, name, email;
+        String url = INFOR_PAGE, name = "", email = "", avt = "";
         boolean canChange = true;
         
-        System.out.println("work");
-        
-        name = request.getParameter("name").trim();
-        email = request.getParameter("email").trim();
-        
-        System.out.println("work 1");
-        
+        try {
+            name = request.getParameter("name").trim();
+            email = request.getParameter("email").trim();
+            avt = request.getParameter("avatar").trim();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+                
         if (!AuthUtil.isValidName(name)) {
             canChange = false;
             request.setAttribute("msgNameError", "The name length must be greater than 4!");
         }
-        System.out.println("work 2");
         
-        if (!AuthUtil.isValidEmail(email)) {
+        if (!email.isEmpty() && !AuthUtil.isValidEmail(email)) {
             canChange = false;
             request.setAttribute("msgEmailError", "Invalid email!");
         }
-        System.out.println("work 3");
         
         if (canChange) {
-            System.out.println("ok");
             HttpSession session = request.getSession();
             AccountDTO acc = AuthUtil.getAccount(session);
             acc.setName(name);
             acc.setEmail(email);
+            acc.setAvatar(avt);
             
             aDAO.update(acc);
         } else {
-            System.out.println("error");
             request.setAttribute("name", name);
             request.setAttribute("email", email);
             request.setAttribute("isChange", true);
@@ -146,8 +145,8 @@ public class ProfileController extends HttpServlet {
         String oldPassword = request.getParameter("oldPassword").trim();
         String newPassword = request.getParameter("newPassword").trim();
         String confirmPassword = request.getParameter("confirmPassword").trim();
-        System.out.println(newPassword);
-        if (!oldPassword.equals(account.getPassword())) {
+
+        if (!PasswordUtils.checkPassword(oldPassword, account.getPassword())) {
             url = CHANGE_PASSWORD_PAGE;
             canChange = false;
             request.setAttribute("msgOldPasswordError", "Your password incorrect!");
@@ -158,6 +157,12 @@ public class ProfileController extends HttpServlet {
             canChange = false;
             request.setAttribute("msgConfirmPwError", "Confirm password must like password!");
         }
+        
+        if (newPassword.equals(oldPassword)) {
+            url = CHANGE_PASSWORD_PAGE;
+            canChange = false;
+            request.setAttribute("msgNewPwError", "The new password cannot be the same as the old password!");
+        }
 
         if (!AuthUtil.isValidPassword(newPassword)) {
             url = CHANGE_PASSWORD_PAGE;
@@ -166,7 +171,7 @@ public class ProfileController extends HttpServlet {
         }
         
         if (canChange) {
-            account.setPassword(newPassword);
+            account.setPassword(PasswordUtils.hashPassword(newPassword));
             aDAO.update(account);
             url = INFOR_PAGE;
         } else {

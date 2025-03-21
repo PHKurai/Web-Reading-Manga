@@ -3,7 +3,15 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import dao.ComicDAO;
+import dto.ComicDTO;
+import dao.CategoryDAO;
+import dto.CategoryDTO;
 import dto.AccountDTO;
+import utils.AuthUtil;
+import dao.CategoryDAO;
+import dto.CategoryDTO;
+import java.util.List;
 
 public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
@@ -52,6 +60,10 @@ public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("\r\n");
       out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
       out.write("<!DOCTYPE html>\r\n");
       out.write("<html>\r\n");
       out.write("    ");
@@ -74,12 +86,15 @@ public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    <span class=\"fs-4 fw-bold\">TENWEB</span>\r\n");
       out.write("                </div>\r\n");
       out.write("\r\n");
-      out.write("                <form class=\"d-flex w-50 mx-3\" role=\"search\">\r\n");
+      out.write("                <form class=\"d-flex w-50 mx-3\" role=\"search\" method=\"get\" action=\"SearchServlet\">\r\n");
       out.write("                    <input \r\n");
       out.write("                        class=\"form-control me-2\" \r\n");
       out.write("                        type=\"search\" \r\n");
-      out.write("                        placeholder=\"Bạn muốn tìm truyện gì\" \r\n");
-      out.write("                        aria-label=\"Search\">\r\n");
+      out.write("                        placeholder=\"Search name comic or author\" \r\n");
+      out.write("                        name=\"searchTerm\"\r\n");
+      out.write("                        value=\"");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${requestScope.searchTerm}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("\"\r\n");
       out.write("                    <button class=\"btn btn-light\" type=\"submit\">\r\n");
       out.write("                        <i class=\"bi bi-search\"></i>\r\n");
       out.write("                    </button>\r\n");
@@ -123,6 +138,11 @@ public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("\r\n");
       out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
+      out.write("\r\n");
       out.write("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\">\r\n");
       out.write("\r\n");
       out.write("<nav class=\"navbar navbar-expand-lg navbar-light bg-white shadow-sm\">\r\n");
@@ -136,51 +156,77 @@ public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            <ul class=\"container d-flex align-items-center justify-content-evenly navbar-nav mb-0\">\r\n");
       out.write("\r\n");
       out.write("                <li class=\"nav-item\">\r\n");
-      out.write("                    <a class=\"nav-link\" href=\"home.jsp\">Trang Chủ</a>\r\n");
+      out.write("                    <a class=\"nav-link\" href=\"home.jsp\">Home</a>\r\n");
       out.write("                </li>\r\n");
       out.write("\r\n");
       out.write("                <li class=\"nav-item dropdown\">\r\n");
       out.write("                    <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"typeDropdown\" role=\"button\" data-bs-toggle=\"dropdown\">\r\n");
-      out.write("                        Thể Loại\r\n");
+      out.write("                        Categories\r\n");
       out.write("                    </a>\r\n");
+      out.write("                    ");
+
+                        CategoryDAO categoryDAO = new CategoryDAO();
+                        List<CategoryDTO> categories = categoryDAO.readAll();
+                    
+      out.write("\r\n");
       out.write("                    <ul class=\"dropdown-menu\">\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Action</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Adventure</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Anime</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Chuyển Sinh</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Cổ Đại</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Comedy</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Drama</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Fantasy</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Manga</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Manhwa</a></li>\r\n");
+      out.write("                        ");
+
+                            for (CategoryDTO category : categories) {
+                        
+      out.write("\r\n");
+      out.write("                        <li><a class=\"dropdown-item\" href=\"CategoryServlet?categoryId=");
+      out.print(category.getId());
+      out.write('"');
+      out.write('>');
+      out.print(category.getName());
+      out.write("</a></li>\r\n");
+      out.write("                            ");
+
+                                }
+                            
+      out.write("\r\n");
       out.write("                    </ul>\r\n");
       out.write("                </li>\r\n");
       out.write("\r\n");
       out.write("                <li class=\"nav-item dropdown\">\r\n");
       out.write("                    <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"rankingDropdown\" role=\"button\" data-bs-toggle=\"dropdown\">\r\n");
-      out.write("                        Xếp Hạng\r\n");
+      out.write("                        Ranking\r\n");
       out.write("                    </a>\r\n");
       out.write("                    <ul class=\"dropdown-menu\">\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Mới nhất</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Đọc nhiều</a></li>\r\n");
-      out.write("                        <li><a class=\"dropdown-item\" href=\"#\">Yêu thích</a></li>\r\n");
+      out.write("                        <li><a class=\"dropdown-item\" href=\"RankingServlet?rankingType=LatestUpdate\">Latest Update</a></li>\r\n");
+      out.write("                        <li><a class=\"dropdown-item\" href=\"RankingServlet?rankingType=MostViews\">Most Views</a></li>\r\n");
+      out.write("                        <li><a class=\"dropdown-item\" href=\"RankingServlet?rankingType=MostFavorites\">Most Favorites</a></li>\r\n");
       out.write("                    </ul>\r\n");
       out.write("                </li>\r\n");
       out.write("\r\n");
       out.write("                <li class=\"nav-item\">\r\n");
-      out.write("                    <a class=\"nav-link\" href=\"#\">Lịch Sử</a>\r\n");
+      out.write("                    <a class=\"nav-link\" href=\"HistoryServlet\">History</a>\r\n");
       out.write("                </li>\r\n");
       out.write("\r\n");
       out.write("                <li class=\"nav-item\">\r\n");
-      out.write("                    <a class=\"nav-link\" href=\"#\">Theo Dõi</a>\r\n");
+      out.write("                    <a class=\"nav-link\" href=\"FollowServlet\">Followed</a>\r\n");
       out.write("                </li>\r\n");
+      out.write("\r\n");
+      out.write("                ");
+
+                    if (AuthUtil.isAdmin(session)) {
+                
+      out.write("\r\n");
+      out.write("                <li class=\"nav-item\">\r\n");
+      out.write("                    <a class=\"nav-link\" href=\"ComicController?action=addComic\">Add Comic</a>\r\n");
+      out.write("                </li>\r\n");
+      out.write("                ");
+
+                    }
+                
+      out.write("\r\n");
       out.write("            </ul>\r\n");
       out.write("        </div>\r\n");
       out.write("    </div>\r\n");
       out.write("</nav>\r\n");
       out.write("\r\n");
-      out.write("<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js\"></script>");
+      out.write("<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js\"></script>\r\n");
       out.write("\r\n");
       out.write("\r\n");
       out.write("    <head>\r\n");
@@ -190,37 +236,63 @@ public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js\"></script>\r\n");
       out.write("    </head>\r\n");
       out.write("    <body>\r\n");
+      out.write("        ");
+            ComicDAO cDAO = new ComicDAO();
+            List<ComicDTO> mostestViewComics = cDAO.findByMostViews(1, 1);
+            ComicDTO mostestViewComic = mostestViewComics.get(0);
+            
+            List<CategoryDTO> categoriesOfComic = categoryDAO.findByComicId(mostestViewComic.getId());
+        
+      out.write("\r\n");
       out.write("        <div class=\"popular-comic shadow-lg text-white p-4 mb-4 position-relative\" \r\n");
-      out.write("             style=\"background-image: url('https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg'); background-size: cover; background-position: center;\">\r\n");
+      out.write("             style=\"background-image: url('");
+      out.print(mostestViewComic.getCoverImage());
+      out.write("'); background-size: cover; background-position: center;\">\r\n");
       out.write("\r\n");
       out.write("            <div class=\"position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50\"></div>\r\n");
       out.write("\r\n");
       out.write("            <div class=\"container position-relative\">\r\n");
       out.write("                <div class=\"row align-items-center\">\r\n");
       out.write("                    <div class=\"col-md-4\">\r\n");
-      out.write("                        <img src=\"https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg\" alt=\"Comic Cover\"\r\n");
+      out.write("                        <img src=\"");
+      out.print(mostestViewComic.getCoverImage());
+      out.write("\" alt=\"");
+      out.print(mostestViewComic.getTitle());
+      out.write("\"\r\n");
       out.write("                             class=\"img-fluid border border-white rounded shadow\">\r\n");
       out.write("                    </div>\r\n");
       out.write("\r\n");
       out.write("                    <div class=\"col-md-8\">\r\n");
       out.write("                        <div class=\"mt-3 mt-md-0\">\r\n");
-      out.write("                            <h2 class=\"fs-2 mb-3\">Akumade Taidana Akuyaku Kizoku</h2>\r\n");
+      out.write("                            <h2 class=\"fs-2 mb-3\">");
+      out.print(mostestViewComic.getTitle());
+      out.write("</h2>\r\n");
       out.write("\r\n");
       out.write("                            <div class=\"mb-3\">\r\n");
-      out.write("                                <span class=\"badge bg-warning text-dark\">Action</span>\r\n");
-      out.write("                                <span class=\"badge bg-warning text-dark\">Adventure</span>\r\n");
-      out.write("                                <span class=\"badge bg-warning text-dark\">Fantasy</span>\r\n");
-      out.write("                                <span class=\"badge bg-warning text-dark\">Seinen</span>\r\n");
+      out.write("                                ");
+
+                                    for (CategoryDTO category : categoriesOfComic) {
+                                
+      out.write("\r\n");
+      out.write("                                <span class=\"badge bg-warning text-dark\">");
+      out.print(category.getName());
+      out.write("</span>\r\n");
+      out.write("                                ");
+
+                                    }
+                                
+      out.write("\r\n");
       out.write("                            </div>\r\n");
       out.write("\r\n");
       out.write("                            <p class=\"mb-3\">\r\n");
-      out.write("                                Luke is the only 3rd son of a villainous duke. By some unexpected instance he comes to know\r\n");
-      out.write("                                of his own fate and attempts to avoid it. He works hard at finding a peaceful family to\r\n");
-      out.write("                                marry into and researching magic. All his hard work is to live a peaceful and slothful\r\n");
-      out.write("                                life... And yet he gets involved in one plan after another!\r\n");
+      out.write("                                ");
+      out.print(mostestViewComic.getDescription());
+      out.write("\r\n");
       out.write("                            </p>\r\n");
       out.write("\r\n");
-      out.write("                            <div class=\"fw-light fst-italic\">By Serota, Izo</div>\r\n");
+      out.write("                            <div class=\"fw-light fst-italic\">");
+      out.print(mostestViewComic.getAuthor());
+      out.write("</div>\r\n");
       out.write("                        </div>\r\n");
       out.write("                    </div>\r\n");
       out.write("                </div>\r\n");
@@ -229,112 +301,76 @@ public final class home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("\r\n");
       out.write("        <div class=\"container\">\r\n");
-      out.write("            <div class=\"d-flex justify-content-between\"><h3>Top Read This Week</h3> <a href=\"comicList.jsp\" class=\"arrow-link\">→</a></div>\r\n");
+      out.write("            <div class=\"d-flex justify-content-between\"><h3>Top Read</h3> <a href=\"RankingServlet?rankingType=MostViews\" class=\"arrow-link\">→</a></div>\r\n");
       out.write("            <div class=\"row row-cols-3 row-cols-md-6 g-4 mb-4\">\r\n");
       out.write("                ");
 
-                    for (int i = 0; i < 6; i++) {
+                    List<ComicDTO> comics = cDAO.findByMostViews(1, 6);
+                    for (ComicDTO comic : comics) {
                 
       out.write("\r\n");
       out.write("                <div class=\"col\">\r\n");
       out.write("                    <div class=\"card comic-card\">\r\n");
-      out.write("                        <img src=\"https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg\" class=\"card-img-top w-100 h-50\" alt=\"");
- 
+      out.write("                        <img src=\"");
+      out.print(comic.getCoverImage());
+      out.write("\" class=\"card-img-top w-100 h-50\" alt=\"");
+
       out.write("\" style=\"max-height: 220px;\">\r\n");
       out.write("                        <div class=\"card-body\">\r\n");
-      out.write("                            <h5 class=\"card-title\"> Comic Title 1  </h5>\r\n");
-      out.write("                            <p class=\"card-text\">Short description or snippet about the comic.</p>\r\n");
-      out.write("                            <a href=\"#\" class=\"btn btn-primary\" >Đọc ngay</a>\r\n");
+      out.write("                            <h5 class=\"card-title\">");
+      out.print(comic.getTitle());
+      out.write("</h5>\r\n");
+      out.write("                            <p class=\"card-text\">");
+      out.print(comic.getDescription());
+      out.write("</p>\r\n");
+      out.write("                            <a href=\"ReadComicServlet?comicId=");
+      out.print(comic.getId());
+      out.write("\" class=\"btn btn-primary\" >Read</a>\r\n");
       out.write("                        </div>\r\n");
       out.write("                    </div>\r\n");
       out.write("                </div>\r\n");
       out.write("                ");
 
                     }
-
                 
       out.write("\r\n");
       out.write("            </div>\r\n");
       out.write("\r\n");
-      out.write("            <div class=\"d-flex justify-content-between\"><h3>Top Read This Month</h3> <a href=\"#\" class=\"arrow-link\">→</a></div>\r\n");
+      out.write("            <div class=\"d-flex justify-content-between\"><h3>Latest Update</h3> <a href=\"RankingServlet?rankingType=LatestUpdate\" class=\"arrow-link\">→</a></div>\r\n");
       out.write("            <div class=\"row row-cols-3 row-cols-md-6 g-4 mb-4\">\r\n");
       out.write("                ");
-                    for (int i = 0; i < 6; i++) {
+                    List<ComicDTO> latestUpdateComics = cDAO.findByLatestUpdate(1, 18);
+                    for (ComicDTO comic : latestUpdateComics) {
                 
       out.write("\r\n");
       out.write("                <div class=\"col\">\r\n");
       out.write("                    <div class=\"card comic-card\">\r\n");
-      out.write("                        <img src=\"https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg\" class=\"card-img-top w-100 h-50\" alt=\"");
- 
+      out.write("                        <img src=\"");
+      out.print(comic.getCoverImage());
+      out.write("\" class=\"card-img-top w-100 h-50\" alt=\"");
+
       out.write("\" style=\"max-height: 220px;\">\r\n");
       out.write("                        <div class=\"card-body\">\r\n");
-      out.write("                            <h5 class=\"card-title\"> Comic Title 1  </h5>\r\n");
-      out.write("                            <p class=\"card-text\">Short description or snippet about the comic.</p>\r\n");
-      out.write("                            <a href=\"#\" class=\"btn btn-primary\" >Đọc ngay</a>\r\n");
+      out.write("                            <h5 class=\"card-title\">");
+      out.print(comic.getTitle());
+      out.write("</h5>\r\n");
+      out.write("                            <p class=\"card-text\">");
+      out.print(comic.getDescription());
+      out.write("</p>\r\n");
+      out.write("                            <a href=\"ReadComicServlet?comicId=");
+      out.print(comic.getId());
+      out.write("\" class=\"btn btn-primary\" >Read</a>\r\n");
       out.write("                        </div>\r\n");
       out.write("                    </div>\r\n");
       out.write("                </div>\r\n");
       out.write("                ");
 
                     }
-
-                
-      out.write("\r\n");
-      out.write("            </div>\r\n");
-      out.write("\r\n");
-      out.write("            <div class=\"d-flex justify-content-between\"><h3>Top Read This Year</h3> <a href=\"#\" class=\"arrow-link\">→</a></div>\r\n");
-      out.write("            <div class=\"row row-cols-3 row-cols-md-6 g-4 mb-4\">\r\n");
-      out.write("                ");
-                    for (int i = 0; i < 6; i++) {
-                
-      out.write("\r\n");
-      out.write("                <div class=\"col\">\r\n");
-      out.write("                    <div class=\"card comic-card\">\r\n");
-      out.write("                        <img src=\"https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg\" class=\"card-img-top w-100 h-50\" alt=\"");
- 
-      out.write("\" style=\"max-height: 220px;\">\r\n");
-      out.write("                        <div class=\"card-body\">\r\n");
-      out.write("                            <h5 class=\"card-title\"> Comic Title 1  </h5>\r\n");
-      out.write("                            <p class=\"card-text\">Short description or snippet about the comic.</p>\r\n");
-      out.write("                            <a href=\"#\" class=\"btn btn-primary\" >Đọc ngay</a>\r\n");
-      out.write("                        </div>\r\n");
-      out.write("                    </div>\r\n");
-      out.write("                </div>\r\n");
-      out.write("                ");
-
-                    }
-
-                
-      out.write("\r\n");
-      out.write("            </div>\r\n");
-      out.write("\r\n");
-      out.write("            <div class=\"d-flex justify-content-between\"><h3>Recently Added</h3> <a href=\"#\" class=\"arrow-link\">→</a></div>\r\n");
-      out.write("            <div class=\"row row-cols-3 row-cols-md-6 g-4 mb-4\">\r\n");
-      out.write("                ");
-                    for (int i = 0; i < 6; i++) {
-                
-      out.write("\r\n");
-      out.write("                <div class=\"col\">\r\n");
-      out.write("                    <div class=\"card comic-card\">\r\n");
-      out.write("                        <img src=\"https://i.pinimg.com/originals/37/3e/76/373e7691ecf16e725e49890edbca1b57.jpg\" class=\"card-img-top w-100 h-50\" alt=\"");
- 
-      out.write("\" style=\"max-height: 220px;\">\r\n");
-      out.write("                        <div class=\"card-body\">\r\n");
-      out.write("                            <h5 class=\"card-title\"> Comic Title 1  </h5>\r\n");
-      out.write("                            <p class=\"card-text\">Short description or snippet about the comic.</p>\r\n");
-      out.write("                            <a href=\"#\" class=\"btn btn-primary\" >Đọc ngay</a>\r\n");
-      out.write("                        </div>\r\n");
-      out.write("                    </div>\r\n");
-      out.write("                </div>\r\n");
-      out.write("                ");
-
-                    }
-
                 
       out.write("\r\n");
       out.write("            </div>\r\n");
       out.write("        </div>\r\n");
-      out.write("            \r\n");
+      out.write("\r\n");
       out.write("        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js\"></script>\r\n");
       out.write("\r\n");
       out.write("    </body>\r\n");
